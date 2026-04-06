@@ -18,7 +18,7 @@ export const defaultHeadingSettings: HeadingWidgetSettings = {
 	},
 	typography_font_weight: '400',
 	typography_text_transform: 'none',
-	typography_font_style: 'normal',
+	typography_font_text: 'normal',
 	typography_text_decoration: 'none',
 	typography_line_height: {
 		unit: 'em',
@@ -59,17 +59,17 @@ export function mapFigmaTextToHeading(
 	settings.typography_typography = 'custom';
 
 	// Map font family
-	if (figmaNode.style?.fontFamily) {
-		settings.typography_font_family = figmaNode.style.fontFamily;
+	if (figmaNode.text?.fontFamily) {
+		settings.typography_font_family = figmaNode.text.fontFamily;
 	} else if (figmaNode.fontName?.family) {
 		settings.typography_font_family = figmaNode.fontName.family;
 	}
 
 	// Map font size
-	if (figmaNode.style?.fontSize) {
+	if (figmaNode.text?.fontSize) {
 		settings.typography_font_size = {
 			unit: 'px',
-			size: figmaNode.style.fontSize,
+			size: figmaNode.text.fontSize,
 			sizes: [],
 		};
 	} else if (figmaNode.fontSize) {
@@ -81,11 +81,11 @@ export function mapFigmaTextToHeading(
 	}
 
 	// Map font weight
-	if (figmaNode.style?.fontWeight) {
-		settings.typography_font_weight = String(figmaNode.style.fontWeight);
-	} else if (figmaNode.fontName?.style) {
-		// Extract weight from style name (e.g., "Regular" = 400, "Bold" = 700)
-		const styleName = figmaNode.fontName.style.toLowerCase();
+	if (figmaNode.text?.fontWeight) {
+		settings.typography_font_weight = String(figmaNode.text.fontWeight);
+	} else if (figmaNode.fontName?.text) {
+		// Extract weight from text name (e.g., "Regular" = 400, "Bold" = 700)
+		const textName = figmaNode.fontName.text.toLowerCase();
 		const weightMap: Record<string, string> = {
 			thin: '100',
 			extralight: '200',
@@ -97,7 +97,7 @@ export function mapFigmaTextToHeading(
 			extrabold: '800',
 			black: '900',
 		};
-		settings.typography_font_weight = weightMap[styleName] || '400';
+		settings.typography_font_weight = weightMap[textName] || '400';
 	}
 
 	// Map text color
@@ -109,8 +109,8 @@ export function mapFigmaTextToHeading(
 	}
 
 	// Map text alignment
-	if (figmaNode.style?.textAlignHorizontal) {
-		const alignment = figmaNode.style.textAlignHorizontal.toLowerCase();
+	if (figmaNode.text?.textAlignHorizontal) {
+		const alignment = figmaNode.text.textAlignHorizontal.toLowerCase();
 		settings.align =
 			alignment === 'center'
 				? 'center'
@@ -128,14 +128,14 @@ export function mapFigmaTextToHeading(
 	}
 
 	// Map text transform
-	if (figmaNode.style?.textCase) {
+	if (figmaNode.text?.textCase) {
 		const caseMap: Record<string, string> = {
 			UPPER: 'uppercase',
 			LOWER: 'lowercase',
 			TITLE: 'capitalize',
 			ORIGINAL: 'none',
 		};
-		settings.typography_text_transform = caseMap[figmaNode.style.textCase] || 'none';
+		settings.typography_text_transform = caseMap[figmaNode.text.textCase] || 'none';
 	} else if (figmaNode.textCase) {
 		const caseMap: Record<string, string> = {
 			UPPER: 'uppercase',
@@ -149,10 +149,10 @@ export function mapFigmaTextToHeading(
 	}
 
 	// Map line height
-	if (figmaNode.style?.lineHeightPx) {
+	if (figmaNode.text?.lineHeightPx) {
 		settings.typography_line_height = {
 			unit: 'px',
-			size: figmaNode.style.lineHeightPx,
+			size: figmaNode.text.lineHeightPx,
 			sizes: [],
 		};
 	} else if (figmaNode.lineHeight && typeof figmaNode.lineHeight === 'object') {
@@ -166,10 +166,10 @@ export function mapFigmaTextToHeading(
 	}
 
 	// Map letter spacing
-	if (figmaNode.style?.letterSpacing) {
+	if (figmaNode.text?.letterSpacing) {
 		settings.typography_letter_spacing = {
 			unit: 'px',
-			size: figmaNode.style.letterSpacing,
+			size: figmaNode.text.letterSpacing,
 			sizes: [],
 		};
 	} else if (figmaNode.letterSpacing) {
@@ -181,8 +181,8 @@ export function mapFigmaTextToHeading(
 	}
 
 	// Map text decoration
-	if (figmaNode.style?.textDecoration) {
-		const decoration = figmaNode.style.textDecoration.toLowerCase();
+	if (figmaNode.text?.textDecoration) {
+		const decoration = figmaNode.text.textDecoration.toLowerCase();
 		settings.typography_text_decoration = decoration === 'none' ? 'none' : decoration;
 	} else if (figmaNode.textDecoration) {
 		const decoration = figmaNode.textDecoration.toLowerCase();
@@ -191,12 +191,12 @@ export function mapFigmaTextToHeading(
 		settings.typography_text_decoration = 'none';
 	}
 
-	// Map font style (italic)
-	if (figmaNode.fontName?.style) {
-		const isItalic = figmaNode.fontName.style.toLowerCase().includes('italic');
-		settings.typography_font_style = isItalic ? 'italic' : 'normal';
+	// Map font text (italic)
+	if (figmaNode.fontName?.text) {
+		const isItalic = figmaNode.fontName.text.toLowerCase().includes('italic');
+		settings.typography_font_text = isItalic ? 'italic' : 'normal';
 	} else {
-		settings.typography_font_style = 'normal';
+		settings.typography_font_text = 'normal';
 	}
 
 	return settings;

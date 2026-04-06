@@ -16,7 +16,7 @@ export function convertFigmaToElementor(
 	depth: number = 0
 ): WidgetBase | null {
 	// Skip if node should not be converted
-	
+
 	if (!shouldConvertNode(figmaNode)) {
 		console.log(
 			`Skipping node: ${figmaNode.type} - ${figmaNode.name || 'unnamed'}`
@@ -76,6 +76,7 @@ export function convertMultipleFigmaNodes(
 	depth: number = 0
 ): WidgetBase[] {
 	const elements: WidgetBase[] = [];
+	console.log("🚀 ~ convertMultipleFigmaNodes ~ figmaNodes:", figmaNodes)
 
 	for (const node of figmaNodes) {
 		const element = convertFigmaToElementor(node, depth);
@@ -93,6 +94,7 @@ export function convertMultipleFigmaNodes(
 export function convertFigmaFrameToContainer(
 	figmaFrame: FigmaNode
 ): WidgetBase | null {
+	console.log("🚀 ~ convertFigmaFrameToContainer ~ figmaFrame:", figmaFrame)
 	// Ensure it's a frame or group
 	if (figmaFrame.type !== 'FRAME' && figmaFrame.type !== 'GROUP') {
 		console.error('Root node must be a FRAME or GROUP');

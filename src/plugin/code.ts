@@ -8,12 +8,10 @@ figma.showUI(__html__, { width: 400, height: 600 });
 // Listen for messages from the UI
 figma.ui.onmessage = async (msg) => {
 	if (msg.type === 'get-figma-nodes') {
-		console.log('msg received in UI #1:', msg);
 		try {
 			// Get only selected nodes
 			const selection = figma.currentPage.selection;
-			console.log('selection:', selection);
-			
+
 			if (!selection || selection.length === 0) {
 				figma.ui.postMessage({
 					type: 'error',
@@ -22,10 +20,9 @@ figma.ui.onmessage = async (msg) => {
 				});
 				return;
 			}
-			
+
 			const nodes = selection.map((node) => serializeNode(node));
-			console.log('nodes serialized in UI #2:', selection);
-			
+
 			// Send back to UI
 			figma.ui.postMessage({
 				type: 'figma-nodes-data',

@@ -11,6 +11,7 @@ export function createHeadingWidget(
 	settings: Partial<HeadingWidgetSettings> = {},
 	depth: number = 0
 ): WidgetBase {
+	console.log('Creating heading widget with text:', text, 'and settings:', settings);
 	return {
 		id: getUniqueId(),
 		settings: {

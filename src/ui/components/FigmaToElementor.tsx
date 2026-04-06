@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { ElementorPage, FigmaNode } from '@/types/elementor';
 import { buildElementorPage } from '@/builder/pageBuilder';
+import { createHeadingWidget } from '../widgets/elementor';
 
 export default function FigmaToElementor() {
 	const [elementorData, setElementorData] = useState<ElementorPage | null>(
@@ -61,12 +62,15 @@ export default function FigmaToElementor() {
 	useEffect(() => {
 		window.onmessage = (event) => {
 			const msg = event.data.pluginMessage;
-			console.log('msg', msg);
-			
+
 			if (msg?.type === 'figma-nodes-data') {
 				try {
 					// Convert Figma nodes to Elementor page
 					const figmaNodes = msg.nodes as FigmaNode[];
+					console.log("🚀 ~ FigmaToElementor ~ figmaNodes:", figmaNodes)
+					const elementorPagef = parseFigmaNodesToElementorPage(figmaNodes);
+					console.log("🚀 ~ FigmaToElementor ~ elementorPage:", elementorPagef)
+					// setElementorData(elementorPage);
 
 					// buildElementorPage handles both single and multiple nodes
 					const elementorPage = buildElementorPage(
@@ -93,6 +97,23 @@ export default function FigmaToElementor() {
 			}
 		};
 	}, []);
+	const parseFigmaNodesToElementorPage = (figmaNodes: FigmaNode[]) => {
+		// Implementation for parsing Figma nodes to Elementor page
+		// console.log("🚀 ~ parseFigmaNodesToElementorPage ~ figmaNodes:", figmaNodes)
+		figmaNodes && Array.isArray(figmaNodes) && figmaNodes.length > 0 &&
+		figmaNodes.map(node => {
+			if(node?.type === 'TEXT'){
+				const text = node.text?.characters || 'Heading';
+				let headingWidget = createHeadingWidget(text, {}, 0);
+				return {
+
+				}
+			}
+			if(node?.type === 'FRAME' || node?.type === 'GROUP') {
+				const childs = parseFigmaNodesToElementorPage(node?.children || []);
+			}
+		}).filter(Boolean);
+	};
 
 	return (
 		<div style={{ padding: '20px' }}>

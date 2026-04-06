@@ -4,6 +4,11 @@ export type FigmaNode = {
 	type: string;
 	name?: string;
 	characters?: string;
+	text?:{
+		characters?: string;
+		fontSize?: number;
+		fontWeight?: number;
+	};
 	style?: {
 		fontSize?: number;
 		fontFamily?: string;

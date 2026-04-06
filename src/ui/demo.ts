@@ -21,8 +21,6 @@ export function example1_SimpleHeading() {
 		header_size: 'h1',
 	});
 
-	console.log('Example 1: Simple Heading');
-	console.log(JSON.stringify(heading, null, 2));
 	return heading;
 }
 
@@ -78,8 +76,6 @@ export function example3_ContainerWithChildren() {
 		})
 	);
 
-	console.log('Example 3: Container with Children');
-	console.log(JSON.stringify(container, null, 2));
 	return container;
 }
 

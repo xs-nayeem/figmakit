@@ -28,9 +28,10 @@ export function createWidgetFromFigmaNode(
 
 	// Get the mapper
 	const figmaMapper = getFigmaMapper(widgetType);
+	// console.log("🚀 ~ createWidgetFromFigmaNode ~ figmaMapper:", figmaMapper)
 	const mappedSettings = figmaMapper ? figmaMapper(figmaNode) : {};
 	console.log('Mapped settings:', mappedSettings);
-	
+
 	// Create widget based on type
 	let widget: WidgetBase | null = null;
 
