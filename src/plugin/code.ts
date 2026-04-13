@@ -5,6 +5,48 @@ import { serializeNode } from "./serializer";
 
 figma.showUI(__html__, { width: 400, height: 600 });
 
+function sanitizeForPostMessage(value: unknown, seen = new WeakSet<object>()): unknown {
+	if (value === null || value === undefined) {
+		return value;
+	}
+
+	if (typeof value === "symbol") {
+		return "mixed";
+	}
+
+	if (typeof value === "bigint") {
+		return value.toString();
+	}
+
+	if (typeof value !== "object") {
+		return value;
+	}
+
+	if (Array.isArray(value)) {
+		return value.map((item) => sanitizeForPostMessage(item, seen));
+	}
+
+	const obj = value as Record<string, unknown>;
+	if (seen.has(obj)) {
+		return undefined;
+	}
+	seen.add(obj);
+
+	const sanitized: Record<string, unknown> = {};
+	for (const [key, raw] of Object.entries(obj)) {
+		if (typeof raw === "function") {
+			continue;
+		}
+
+		const next = sanitizeForPostMessage(raw, seen);
+		if (next !== undefined) {
+			sanitized[key] = next;
+		}
+	}
+
+	return sanitized;
+}
+
 // Listen for messages from the UI
 figma.ui.onmessage = async (msg) => {
 	if (msg.type === 'get-figma-nodes') {
@@ -21,7 +63,7 @@ figma.ui.onmessage = async (msg) => {
 				return;
 			}
 
-			const nodes = selection.map((node) => serializeNode(node));
+			const nodes = selection.map((node) => sanitizeForPostMessage(serializeNode(node)));
 
 			// Send back to UI
 			figma.ui.postMessage({
