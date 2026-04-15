@@ -35,6 +35,7 @@ export function convertFigmaToElementor(
 
 	// Create widget from node
 	const widget = createWidgetFromFigmaNode(figmaNode, depth);
+	console.log("🚀 ~ convertFigmaToElementor ~ widget:", widget)
 
 	if (!widget) {
 		return null;

@@ -20,7 +20,7 @@ export function createHeadingWidget(
 		},
 		elements: [],
 		isInner: getIsInner(depth),
-		widgetType: 'heading',
+		widgetType: 'elementskit-heading',
 		elType: 'widget',
 	};
 }

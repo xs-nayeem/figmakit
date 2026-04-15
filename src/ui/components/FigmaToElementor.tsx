@@ -68,8 +68,8 @@ export default function FigmaToElementor() {
 					// Convert Figma nodes to Elementor page
 					const figmaNodes = msg.nodes as FigmaNode[];
 					console.log("🚀 ~ FigmaToElementor ~ figmaNodes:", figmaNodes)
-					const elementorPagef = parseFigmaNodesToElementorPage(figmaNodes);
-					console.log("🚀 ~ FigmaToElementor ~ elementorPage:", elementorPagef)
+					// const elementorPagef = parseFigmaNodesToElementorPage(figmaNodes);
+					// console.log("🚀 ~ FigmaToElementor ~ elementorPage:", elementorPagef)
 					// setElementorData(elementorPage);
 
 					// buildElementorPage handles both single and multiple nodes
@@ -97,23 +97,23 @@ export default function FigmaToElementor() {
 			}
 		};
 	}, []);
-	const parseFigmaNodesToElementorPage = (figmaNodes: FigmaNode[]) => {
-		// Implementation for parsing Figma nodes to Elementor page
-		// console.log("🚀 ~ parseFigmaNodesToElementorPage ~ figmaNodes:", figmaNodes)
-		figmaNodes && Array.isArray(figmaNodes) && figmaNodes.length > 0 &&
-		figmaNodes.map(node => {
-			if(node?.type === 'TEXT'){
-				const text = node.text?.characters || 'Heading';
-				let headingWidget = createHeadingWidget(text, {}, 0);
-				return {
+	// const parseFigmaNodesToElementorPage = (figmaNodes: FigmaNode[]) => {
+	// 	// Implementation for parsing Figma nodes to Elementor page
+	// 	// console.log("🚀 ~ parseFigmaNodesToElementorPage ~ figmaNodes:", figmaNodes)
+	// 	figmaNodes && Array.isArray(figmaNodes) && figmaNodes.length > 0 &&
+	// 	figmaNodes.map(node => {
+	// 		if(node?.type === 'TEXT'){
+	// 			const text = node.text?.characters || 'Heading';
+	// 			let headingWidget = createHeadingWidget(text, {}, 0);
+	// 			return {
 
-				}
-			}
-			if(node?.type === 'FRAME' || node?.type === 'GROUP') {
-				const childs = parseFigmaNodesToElementorPage(node?.children || []);
-			}
-		}).filter(Boolean);
-	};
+	// 			}
+	// 		}
+	// 		if(node?.type === 'FRAME' || node?.type === 'GROUP') {
+	// 			const childs = parseFigmaNodesToElementorPage(node?.children || []);
+	// 		}
+	// 	}).filter(Boolean);
+	// };
 
 	return (
 		<div style={{ padding: '20px' }}>

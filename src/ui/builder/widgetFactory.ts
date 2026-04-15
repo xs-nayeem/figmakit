@@ -38,7 +38,7 @@ export function createWidgetFromFigmaNode(
 	switch (widgetType) {
 		case 'heading': {
 			// For heading widgets, extract text
-			const text = figmaNode.characters || 'Heading';
+			const text = figmaNode?.text?.characters || 'Heading';
 			widget = createHeadingWidget(text, mappedSettings, depth);
 			break;
 		}

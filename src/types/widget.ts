@@ -12,20 +12,25 @@ export interface WidgetBase {
 }
 
 export interface HeadingWidgetSettings {
-	title?: string;
-	header_size?: string;
+	ekit_heading_title?: string;
+	ekit_heading_title_tag?: string;
 	align?: string;
-	typography_typography?: string;
-	typography_font_family?: string;
-	typography_font_size?: {
+	ekit_heading_title_typography_typography?: string;
+	ekit_heading_title_typography_font_family?: string;
+	ekit_heading_title_typography_font_size?: {
 		unit: string;
 		size: number;
 		sizes: any[];
 	};
-	typography_font_weight?: string;
-	typography_text_transform?: string;
-	title_color?: string;
+	ekit_heading_title_typography_font_weight?: string;
+	ekit_heading_title_text_transform?: string;
+	ekit_heading_title_color?: string;
 	[key: string]: any;
+}
+
+export interface FontFamily {
+	family: string;
+	style: string;
 }
 
 export interface ImageWidgetSettings {

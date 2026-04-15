@@ -1,4 +1,4 @@
-import { HeadingWidgetSettings } from '@/types/widget';
+import { FontFamily, HeadingWidgetSettings } from '@/types/widget';
 import { rgbToHex } from '@/ui/utils/rgbToHex';
 
 /**
@@ -50,30 +50,34 @@ export function mapFigmaTextToHeading(
 	const settings: Partial<HeadingWidgetSettings> = {};
 
 	// Map text content
-	if (figmaNode.characters) {
-		settings.title = figmaNode.characters;
+	if (figmaNode?.text?.characters) {
+		settings.ekit_heading_title = figmaNode.text.characters;
 	}
 
 	// Default header size
-	settings.header_size = 'h2';
-	settings.typography_typography = 'custom';
+	settings.ekit_heading_title_tag = 'h2';
+	settings.ekit_heading_title_typography_typography = 'custom';
 
 	// Map font family
-	if (figmaNode.text?.fontFamily) {
-		settings.typography_font_family = figmaNode.text.fontFamily;
-	} else if (figmaNode.fontName?.family) {
-		settings.typography_font_family = figmaNode.fontName.family;
+	const fontFamily = figmaNode?.text?.fontName;
+
+	if (fontFamily && fontFamily !== 'mixed') {
+		settings.ekit_heading_title_typography_font_family = fontFamily.family;
+		settings.ekit_heading_title_typography_font_style = fontFamily.style;
+	} else {
+		settings.ekit_heading_title_typography_font_family = '';
+		settings.ekit_heading_title_typography_font_style = 'regular';
 	}
 
 	// Map font size
 	if (figmaNode.text?.fontSize) {
-		settings.typography_font_size = {
+		settings.ekit_heading_title_typography_font_size = {
 			unit: 'px',
 			size: figmaNode.text.fontSize,
 			sizes: [],
 		};
 	} else if (figmaNode.fontSize) {
-		settings.typography_font_size = {
+		settings.ekit_heading_title_typography_font_size = {
 			unit: 'px',
 			size: figmaNode.fontSize,
 			sizes: [],
@@ -82,7 +86,7 @@ export function mapFigmaTextToHeading(
 
 	// Map font weight
 	if (figmaNode.text?.fontWeight) {
-		settings.typography_font_weight = String(figmaNode.text.fontWeight);
+		settings.ekit_heading_title_typography_font_weight = String(figmaNode.text.fontWeight);
 	} else if (figmaNode.fontName?.text) {
 		// Extract weight from text name (e.g., "Regular" = 400, "Bold" = 700)
 		const textName = figmaNode.fontName.text.toLowerCase();
@@ -97,21 +101,21 @@ export function mapFigmaTextToHeading(
 			extrabold: '800',
 			black: '900',
 		};
-		settings.typography_font_weight = weightMap[textName] || '400';
+		settings.ekit_heading_title_typography_font_weight = weightMap[textName] || '400';
 	}
 
 	// Map text color
-	if (figmaNode.fills && figmaNode.fills.length > 0) {
-		const fill = figmaNode.fills[0];
+	if (figmaNode?.text?.fills && figmaNode?.text?.fills.length > 0) {
+		const fill = figmaNode.text.fills[0];
 		if (fill.type === 'SOLID' && fill.color) {
-			settings.title_color = rgbToHex(fill.color);
+			settings.ekit_heading_title_color = rgbToHex(fill.color);
 		}
 	}
 
 	// Map text alignment
 	if (figmaNode.text?.textAlignHorizontal) {
 		const alignment = figmaNode.text.textAlignHorizontal.toLowerCase();
-		settings.align =
+		settings.ekit_heading_title_align =
 			alignment === 'center'
 				? 'center'
 				: alignment === 'right'
@@ -119,12 +123,12 @@ export function mapFigmaTextToHeading(
 					: 'left';
 	} else if (figmaNode.textAlignHorizontal) {
 		const alignment = figmaNode.textAlignHorizontal.toLowerCase();
-		settings.align =
+		settings.ekit_heading_title_align =
 			alignment === 'center'
 				? 'center'
 				: alignment === 'right'
 					? 'right'
-						: 'left';
+					: 'left';
 	}
 
 	// Map text transform
@@ -135,7 +139,7 @@ export function mapFigmaTextToHeading(
 			TITLE: 'capitalize',
 			ORIGINAL: 'none',
 		};
-		settings.typography_text_transform = caseMap[figmaNode.text.textCase] || 'none';
+		settings.ekit_heading_title_typography_text_transform = caseMap[figmaNode.text.textCase] || 'none';
 	} else if (figmaNode.textCase) {
 		const caseMap: Record<string, string> = {
 			UPPER: 'uppercase',
@@ -143,21 +147,21 @@ export function mapFigmaTextToHeading(
 			TITLE: 'capitalize',
 			ORIGINAL: 'none',
 		};
-		settings.typography_text_transform = caseMap[figmaNode.textCase] || 'none';
+		settings.ekit_heading_title_typography_text_transform = caseMap[figmaNode.textCase] || 'none';
 	} else {
-		settings.typography_text_transform = 'none';
+		settings.ekit_heading_title_typography_text_transform = 'none';
 	}
 
 	// Map line height
 	if (figmaNode.text?.lineHeightPx) {
-		settings.typography_line_height = {
+		settings.ekit_heading_title_typography_line_height = {
 			unit: 'px',
 			size: figmaNode.text.lineHeightPx,
 			sizes: [],
 		};
 	} else if (figmaNode.lineHeight && typeof figmaNode.lineHeight === 'object') {
 		if (figmaNode.lineHeight.unit === 'PIXELS') {
-			settings.typography_line_height = {
+			settings.ekit_heading_title_typography_line_height = {
 				unit: 'px',
 				size: figmaNode.lineHeight.value,
 				sizes: [],
@@ -167,13 +171,13 @@ export function mapFigmaTextToHeading(
 
 	// Map letter spacing
 	if (figmaNode.text?.letterSpacing) {
-		settings.typography_letter_spacing = {
+		settings.ekit_heading_title_typography_letter_spacing = {
 			unit: 'px',
 			size: figmaNode.text.letterSpacing,
 			sizes: [],
 		};
 	} else if (figmaNode.letterSpacing) {
-		settings.typography_letter_spacing = {
+		settings.ekit_heading_title_typography_letter_spacing = {
 			unit: 'px',
 			size: figmaNode.letterSpacing,
 			sizes: [],
@@ -183,20 +187,20 @@ export function mapFigmaTextToHeading(
 	// Map text decoration
 	if (figmaNode.text?.textDecoration) {
 		const decoration = figmaNode.text.textDecoration.toLowerCase();
-		settings.typography_text_decoration = decoration === 'none' ? 'none' : decoration;
+		settings.ekit_heading_title_typography_text_decoration = decoration === 'none' ? 'none' : decoration;
 	} else if (figmaNode.textDecoration) {
 		const decoration = figmaNode.textDecoration.toLowerCase();
-		settings.typography_text_decoration = decoration === 'none' ? 'none' : decoration;
+		settings.ekit_heading_title_typography_text_decoration = decoration === 'none' ? 'none' : decoration;
 	} else {
-		settings.typography_text_decoration = 'none';
+		settings.ekit_heading_title_typography_text_decoration = 'none';
 	}
 
 	// Map font text (italic)
 	if (figmaNode.fontName?.text) {
 		const isItalic = figmaNode.fontName.text.toLowerCase().includes('italic');
-		settings.typography_font_text = isItalic ? 'italic' : 'normal';
+		settings.ekit_heading_title_typography_font_text = isItalic ? 'italic' : 'normal';
 	} else {
-		settings.typography_font_text = 'normal';
+		settings.ekit_heading_title_typography_font_text = 'normal';
 	}
 
 	return settings;
